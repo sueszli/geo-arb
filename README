@@ -13,7 +13,7 @@ various scripts to detect wage and cost asymmetries in the european labor market
 currently limited to the german speaking area (germany, austria, switzerland, liechteinstein).
 
 ```
-$ uv run src/example_usage_v1.py
+$ uv run src/example_usage.py
 
     LIE [P90]: 204,028.20 EUR/yr saved (1.9 yrs for mortgage)
     CHE [P90]: 146,499.00 EUR/yr saved (2.8 yrs for mortgage)

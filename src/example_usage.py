@@ -1,6 +1,10 @@
 import functools
 import itertools
 from enum import Enum, auto
+from pathlib import Path
+
+import pandas as pd
+import plotnine as p9
 
 #
 # params
@@ -162,7 +166,106 @@ def net_savings(country_code: Country, dev_experience: DevExperience) -> float:
     return annual_savings
 
 
+def get_plot() -> p9.ggplot:
+    rows = []
+    for country in Country:
+        for experience in DevExperience:
+            label_map = {
+                DevExperience.P10: ("10th", "10th percentile"),
+                DevExperience.P25: ("25th", "25th percentile"),
+                DevExperience.P50: ("50th", "Median (50th)"),
+                DevExperience.P75: ("75th", "75th percentile"),
+                DevExperience.P90: ("90th", "90th percentile"),
+            }
+            key, label = label_map[experience]
+
+            gross_income = GROSS_INCOME_BY_PERCENTILE[country][key]
+            net_income = TAX_FUNCTION_BY_COUNTRY[country](gross_income)
+            tax_deductions = gross_income - net_income
+            living_costs = sum(EXPENSES[country].values()) * 12
+            net_savings = net_income - living_costs
+
+            rows.append(
+                {
+                    "country": country.value,
+                    "experience_label": label,
+                    "tax_deductions": float(tax_deductions),
+                    "living_costs": float(living_costs),
+                    "net_savings": float(net_savings),
+                }
+            )
+
+    df = pd.DataFrame(rows)
+    label_order = [
+        "10th percentile",
+        "25th percentile",
+        "Median (50th)",
+        "75th percentile",
+        "90th percentile",
+    ]
+    df["experience_label"] = pd.Categorical(df["experience_label"], categories=label_order, ordered=True)
+
+    breakdown = df.melt(
+        id_vars=["country", "experience_label"],
+        value_vars=["tax_deductions", "living_costs", "net_savings"],
+        var_name="component",
+        value_name="amount",
+    )
+    breakdown["component"] = breakdown["component"].map(
+        {
+            "tax_deductions": "Tax & social deductions",
+            "living_costs": "Cost of living",
+            "net_savings": "Net savings",
+        }
+    )
+
+    return (
+        p9.ggplot(breakdown, p9.aes("experience_label", "amount", fill="component"))
+        + p9.geom_col(width=0.75)
+        + p9.geom_hline(yintercept=0, linetype="solid", color="#2c2c2c", size=0.5)
+        + p9.facet_wrap("~country", ncol=2)
+        + p9.scale_fill_manual(
+            values={
+                "Tax & social deductions": "#c44e52",
+                "Cost of living": "#4c72b0",
+                "Net savings": "#55a868",
+            }
+        )
+        + p9.scale_y_continuous(labels=lambda l: [f"{v / 1000:.0f}k" for v in l])
+        + p9.labs(
+            title="Developer Compensation Analysis Across European Countries",
+            subtitle="Income breakdown by experience level showing tax burden, living costs and net savings potential",
+            x="Experience Level (Levels.fyi percentile)",
+            y="Annual Amount (€)",
+            fill="",
+        )
+        + p9.theme_minimal()
+        + p9.theme(
+            figure_size=(14, 10),
+            plot_title=p9.element_text(size=14, weight="bold", margin={"b": 4}),
+            plot_subtitle=p9.element_text(size=10, color="#4a4a4a", margin={"b": 6}),
+            axis_text_x=p9.element_text(angle=45, ha="right", size=9),
+            axis_text_y=p9.element_text(size=9),
+            axis_title_x=p9.element_text(size=10, weight="bold", margin={"t": 4}),
+            axis_title_y=p9.element_text(size=10, weight="bold", margin={"r": 4}),
+            legend_position="top",
+            legend_direction="horizontal",
+            legend_text=p9.element_text(size=10),
+            legend_title=p9.element_blank(),
+            legend_margin=0,
+            panel_spacing_x=0.02,
+            panel_spacing_y=0.04,
+            strip_text=p9.element_text(size=11, weight="bold", margin={"b": 2, "t": 2}),
+            strip_background=p9.element_rect(fill="#f5f5f5", color="#e0e0e0"),
+            panel_grid_major_y=p9.element_line(color="#e8e8e8", size=0.5),
+            panel_grid_minor_y=p9.element_blank(),
+            panel_grid_major_x=p9.element_blank(),
+        )
+    )
+
+
 if __name__ == "__main__":
+    # print savings
     combos = itertools.product(Country, DevExperience)
     compute = functools.partial(net_savings)
     results = [(c, e, compute(c, e)) for c, e in combos]
@@ -181,3 +284,8 @@ if __name__ == "__main__":
         exp_str = experience.value[:3]
         savings_str = f"{savings:,.2f}".rjust(max_savings_len)
         print(f"{country_str} [{exp_str}]: {savings_str} EUR/yr saved" + yrs_str)
+
+    # plot
+    output_dir = Path(__file__).resolve().parent.parent / "plots"
+    output_dir.mkdir(exist_ok=True)
+    get_plot().save(str(output_dir / "savings.png"), dpi=300, verbose=False)
