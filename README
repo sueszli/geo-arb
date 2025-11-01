@@ -41,3 +41,5 @@ $ uv run src/example_usage.py
     DEU [P10]:   4,116.00 EUR/yr saved
     GBR [P10]:  -6,759.24 EUR/yr saved
 ```
+
+for this demo the first 3 characters denote the country (ISO 3166-1 alpha-3), the bracketed value denotes the salary percentile (P10, P25, P50, P75, P90) and the rest shows the estimated annual savings when working in that country after accounting for cost of living and taxes/social deductions. the parenthetical value for some entries indicates the number of years it would take to pay off a typical mortgage in vienna, austria (arbitrary lower income country for arbitrage comparison).

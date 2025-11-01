@@ -145,6 +145,11 @@ TAX_FUNCTION_BY_COUNTRY = {
 }
 
 
+#
+# analysis
+#
+
+
 def net_savings(country_code: Country, dev_experience: DevExperience) -> float:
     gross_income = GROSS_INCOME_BY_PERCENTILE[country_code][
         {
@@ -166,47 +171,53 @@ def net_savings(country_code: Country, dev_experience: DevExperience) -> float:
     return annual_savings
 
 
-def get_plot() -> p9.ggplot:
+def plot():
     rows = []
+    country_labels = {
+        Country.LIE: "Liechtenstein",
+        Country.CHE: "Switzerland",
+        Country.DEU: "Germany",
+        Country.AUT: "Austria",
+        Country.GBR: "Great Britain",
+    }
     for country in Country:
         for experience in DevExperience:
-            label_map = {
-                DevExperience.P10: ("10th", "10th percentile"),
-                DevExperience.P25: ("25th", "25th percentile"),
-                DevExperience.P50: ("50th", "Median (50th)"),
-                DevExperience.P75: ("75th", "75th percentile"),
-                DevExperience.P90: ("90th", "90th percentile"),
-            }
+            label_map = {DevExperience.P10: ("10th", "10th percentile"), DevExperience.P25: ("25th", "25th percentile"), DevExperience.P50: ("50th", "Median (50th)"), DevExperience.P75: ("75th", "75th percentile"), DevExperience.P90: ("90th", "90th percentile")}
             key, label = label_map[experience]
-
             gross_income = GROSS_INCOME_BY_PERCENTILE[country][key]
             net_income = TAX_FUNCTION_BY_COUNTRY[country](gross_income)
             tax_deductions = gross_income - net_income
             living_costs = sum(EXPENSES[country].values()) * 12
             net_savings = net_income - living_costs
-
-            rows.append(
-                {
-                    "country": country.value,
-                    "experience_label": label,
-                    "tax_deductions": float(tax_deductions),
-                    "living_costs": float(living_costs),
-                    "net_savings": float(net_savings),
-                }
-            )
+            rows.append({"country": country_labels[country], "experience_label": label, "tax_deductions": float(tax_deductions), "living_costs": float(living_costs), "net_savings": float(net_savings)})
 
     df = pd.DataFrame(rows)
-    label_order = [
-        "10th percentile",
-        "25th percentile",
-        "Median (50th)",
-        "75th percentile",
-        "90th percentile",
-    ]
+    country_order = ["Liechtenstein", "Switzerland", "Germany", "Austria", "Great Britain"]
+    df["country"] = pd.Categorical(df["country"], categories=country_order, ordered=True)
+    label_order = ["10th percentile", "25th percentile", "Median (50th)", "75th percentile", "90th percentile"]
     df["experience_label"] = pd.Categorical(df["experience_label"], categories=label_order, ordered=True)
+    df["experience_numeric"] = df["experience_label"].cat.codes + 1
+
+    net_savings_top = df["tax_deductions"] + df["living_costs"] + df["net_savings"]
+    label_offset = df["net_savings"].abs() * 0.04 + 1200
+    signed_label_offset = label_offset.where(df["net_savings"] >= 0, -label_offset)
+
+    def _format_thousands(value: float) -> str:
+        value_k = value / 1000
+        if abs(value_k) >= 100:
+            formatted = f"{value_k:.0f}"
+        elif abs(value_k) >= 10:
+            formatted = f"{value_k:.1f}"
+        else:
+            formatted = f"{value_k:.2f}"
+        formatted = formatted.rstrip("0").rstrip(".")
+        return f"{formatted}k"
+
+    df["label_text"] = df["net_savings"].apply(_format_thousands)
+    df["label_y"] = net_savings_top + signed_label_offset
 
     breakdown = df.melt(
-        id_vars=["country", "experience_label"],
+        id_vars=["country", "experience_label", "experience_numeric"],
         value_vars=["tax_deductions", "living_costs", "net_savings"],
         var_name="component",
         value_name="amount",
@@ -218,18 +229,49 @@ def get_plot() -> p9.ggplot:
             "net_savings": "Net savings",
         }
     )
+    component_order = ["Cost of living", "Tax & social deductions", "Net savings"]
+    breakdown["component"] = pd.Categorical(breakdown["component"], categories=component_order, ordered=True)
 
-    return (
-        p9.ggplot(breakdown, p9.aes("experience_label", "amount", fill="component"))
+    p = (
+        p9.ggplot(breakdown, p9.aes("experience_numeric", "amount", fill="component"))
         + p9.geom_col(width=0.75)
+        + p9.stat_smooth(
+            data=df,
+            mapping=p9.aes(
+                x="experience_numeric",
+                y="net_savings",
+                group="country",
+            ),
+            inherit_aes=False,
+            method="lm",
+            formula="y ~ x + I(x**2) + I(x**3)",
+            se=False,
+            color="#1b9e77",
+            size=1.1,
+        )
+        + p9.geom_text(
+            data=df,
+            mapping=p9.aes(x="experience_numeric", y="label_y", label="label_text"),
+            inherit_aes=False,
+            size=8,
+            va="bottom",
+            ha="center",
+            color="#1a1a1a",
+        )
         + p9.geom_hline(yintercept=0, linetype="solid", color="#2c2c2c", size=0.5)
         + p9.facet_wrap("~country", ncol=2)
         + p9.scale_fill_manual(
             values={
-                "Tax & social deductions": "#c44e52",
-                "Cost of living": "#4c72b0",
-                "Net savings": "#55a868",
-            }
+                "Cost of living": "#a6cee3",
+                "Tax & social deductions": "#fbb4ae",
+                "Net savings": "#b2df8a",
+            },
+            breaks=component_order,
+        )
+        + p9.scale_x_continuous(
+            breaks=range(1, len(label_order) + 1),
+            labels=label_order,
+            expand=(0.02, 0),
         )
         + p9.scale_y_continuous(labels=lambda l: [f"{v / 1000:.0f}k" for v in l])
         + p9.labs(
@@ -241,7 +283,7 @@ def get_plot() -> p9.ggplot:
         )
         + p9.theme_minimal()
         + p9.theme(
-            figure_size=(14, 10),
+            figure_size=(16, 12),
             plot_title=p9.element_text(size=14, weight="bold", margin={"b": 4}),
             plot_subtitle=p9.element_text(size=10, color="#4a4a4a", margin={"b": 6}),
             axis_text_x=p9.element_text(angle=45, ha="right", size=9),
@@ -262,10 +304,12 @@ def get_plot() -> p9.ggplot:
             panel_grid_major_x=p9.element_blank(),
         )
     )
+    output_dir = Path(__file__).resolve().parent.parent / "plots"
+    output_dir.mkdir(exist_ok=True)
+    p.save(str(output_dir / "savings.pdf"), format="pdf", verbose=False)
 
 
-if __name__ == "__main__":
-    # print savings
+def print_savings():
     combos = itertools.product(Country, DevExperience)
     compute = functools.partial(net_savings)
     results = [(c, e, compute(c, e)) for c, e in combos]
@@ -273,8 +317,6 @@ if __name__ == "__main__":
 
     from mortgage.austria import estimate_mortgage_payoff_years
 
-    max_country_len = max(len(str(c)) for c, _, _ in results)
-    max_exp_len = max(len(str(e)) for _, e, _ in results)
     max_savings_len = max(len(f"{s:,.2f}") for _, _, s in results)
 
     for country, experience, savings in results:
@@ -285,7 +327,7 @@ if __name__ == "__main__":
         savings_str = f"{savings:,.2f}".rjust(max_savings_len)
         print(f"{country_str} [{exp_str}]: {savings_str} EUR/yr saved" + yrs_str)
 
-    # plot
-    output_dir = Path(__file__).resolve().parent.parent / "plots"
-    output_dir.mkdir(exist_ok=True)
-    get_plot().save(str(output_dir / "savings.png"), dpi=300, verbose=False)
+
+if __name__ == "__main__":
+    print_savings()
+    plot()
