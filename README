@@ -1,1 +1,22 @@
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠔⠚⠉⠀⠀⠈⠙⢦⣄⠀⠀⠀
+⠀⠀⠀⠀⢀⣠⠴⢒⡽⢃⣛⣍⣉⡐⢠⠀⠀⠀⠀⠈⣻⣢⡀   data driven
+⡠⣴⠖⠋⠁⠀⠀⠨⡑⠚⠓⡖⡀⠘⡠⢁⣀⠤⣒⡩⢕⡪⡇   geographic
+⣿⡿⣢⣀⠀⠀⠀⠀⠈⠁⢒⣒⠦⢛⡊⢅⡂⢍⡒⠭⡒⠭⡇   arbitrage
+⡿⣿⣿⣷⣧⣢⢤⡤⢖⡊⠥⡒⠬⡒⠬⣐⠬⣑⢨⡱⠎⠃⠁
+⠻⣿⣿⣿⣿⣿⣗⠨⣑⠪⣑⠪⣕⣪⡱⠶⠓⠉⠀⠀⠀⠀⠀
+⠀⠀⠙⠻⢿⣿⡇⢍⣲⡭⠶⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠙⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
+exploit wage and cost asymmetries in the european economic area.
+
+└── src
+    └── tax
+        ├── austria.py
+        ├── france.py
+        ├── germany.py
+        ├── liechteinstein.py
+        ├── switzerland-estv-income-rates.csv
+        ├── switzerland-estv-scales.csv
+        ├── switzerland.py
+        └── united_kingdom.py
