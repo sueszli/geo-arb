@@ -48,6 +48,7 @@ GROSS_INCOME_BY_PERCENTILE = {
         "90th": 210_000,
     },
     Country.CHE: {
+        # maybe also check: https://swissdevjobs.ch/salaries
         "10th": 77_300,
         "25th": 101_000,
         "50th": 125_000,
