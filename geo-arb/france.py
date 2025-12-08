@@ -1,3 +1,39 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "openfisca-core==43.4.2",
+#   "openfisca-france==174.2.8",
+# ]
+# ///
+
+GROSS_INCOME_BY_PERCENTILE = {
+    # data from levels.fyi
+    "10th": 35_400,
+    "25th": 43_600,
+    "50th": 56_400,
+    "75th": 74_100,
+    "90th": 102_500,
+}
+EXPENSES_BREAKDOWN = {
+    # paris
+    # adjusted from numbeo.com: single, central 1bedroom
+    "Housing": 1800.00,
+    "Utilities": 160.00,
+    "Groceries": 400.00,
+    "Transportation": 88.80,
+    "Subscriptions": 60.00,
+    "Discretionary": 120.00,
+    "Miscellaneous": 100.00,
+}
+
+ANNUAL_EXPENSES = sum(EXPENSES_BREAKDOWN.values()) * 12
+
+
+#
+# income tax
+#
+
+
 from datetime import date
 from functools import lru_cache
 from typing import Optional, Union

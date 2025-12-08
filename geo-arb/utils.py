@@ -1,3 +1,22 @@
+from functools import wraps
+
+
+def suppress_errors(func):  # return none on failure
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception:
+            return None
+
+    return wrapper
+
+
+#
+# mortgage payoff estimate
+#
+
+
 TRANSFER_TAX_RATE = 0.035
 NOTARY_RATE = 0.024  # 2% + 20% VAT ≈ 2.4%
 AGENT_RATE = 0.036  # 3% + 20% VAT = 3.6%
@@ -103,7 +122,7 @@ def _monthly_mortgage_payment(principal: float, annual_rate: float, years: int) 
     return principal * (monthly_rate * (1 + monthly_rate) ** num_payments) / ((1 + monthly_rate) ** num_payments - 1)
 
 
-def simulate_payoff_years(
+def _simulate_payoff_years(
     mortgage_amount: float,
     annual_interest_rate: float,
     monthly_savings: float,
@@ -213,7 +232,7 @@ def estimate_mortgage_payoff_years(
         down_payment_ratio = down_payment / purchase_price
         annual_interest_rate = _interest_rate(down_payment_ratio)
         monthly_ownership_costs = _monthly_ownership_costs(purchase_price)
-        payoff_years, total_interest = simulate_payoff_years(
+        payoff_years, total_interest = _simulate_payoff_years(
             mortgage_amount,
             annual_interest_rate,
             monthly_savings,
@@ -228,6 +247,6 @@ def estimate_mortgage_payoff_years(
         else:
             return payoff_years
 
-    except ValueError:
+    except Exception:
         # fall back to other option if mortgage simulation fails
         return save_years if save_years < float("inf") else float("inf")

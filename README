@@ -10,38 +10,41 @@
 
 various scripts to detect wage and cost asymmetries in the european labor market.
 
-currently limited to the german speaking area (germany, austria, switzerland, liechteinstein).
+currently limited to a subset of countries.
 
-```
-$ uv run src/example_usage.py
+$ uv run demo.py
 
-    LIE [P90]: 204,028.20 EUR/yr saved (1.9 yrs for mortgage)
-    CHE [P90]: 146,499.00 EUR/yr saved (2.8 yrs for mortgage)
-    LIE [P75]: 113,976.20 EUR/yr saved (3.7 yrs for mortgage)
-    CHE [P75]:  79,444.00 EUR/yr saved (5.9 yrs for mortgage)
-    GBR [P90]:  79,422.76 EUR/yr saved (5.9 yrs for mortgage)
-    LIE [P50]:  70,665.20 EUR/yr saved (6.9 yrs for mortgage)
-    LIE [P25]:  50,913.20 EUR/yr saved (10.8 yrs for mortgage)
-    GBR [P75]:  44,973.76 EUR/yr saved (12.8 yrs for mortgage)
-    CHE [P50]:  44,884.00 EUR/yr saved (12.9 yrs for mortgage)
-    AUT [P90]:  40,810.00 EUR/yr saved (14.6 yrs for mortgage)
-    DEU [P90]:  32,590.00 EUR/yr saved (22.1 yrs for mortgage)
-    AUT [P75]:  31,298.00 EUR/yr saved (24.1 yrs for mortgage)
-    LIE [P10]:  30,906.20 EUR/yr saved (24.8 yrs for mortgage)
-    CHE [P25]:  28,799.00 EUR/yr saved (40.2 yrs for mortgage)
-    GBR [P50]:  23,838.76 EUR/yr saved (94.5 yrs for mortgage)
-    DEU [P75]:  23,186.00 EUR/yr saved (114.9 yrs for mortgage)
-    AUT [P50]:  22,889.00 EUR/yr saved (127.4 yrs for mortgage)
-    DEU [P50]:  16,120.00 EUR/yr saved
-    AUT [P25]:  14,514.00 EUR/yr saved
-    CHE [P10]:  11,921.00 EUR/yr saved
-    DEU [P25]:   9,817.00 EUR/yr saved
-    AUT [P10]:   5,833.00 EUR/yr saved
-    GBR [P25]:   4,987.76 EUR/yr saved
-    DEU [P10]:   4,116.00 EUR/yr saved
-    GBR [P10]:  -6,759.24 EUR/yr saved
-```
+    shape: (25, 6)
+    ┌────────────────┬──────┬────────┬────────┬──────────┬──────────────┐
+    │ country        ┆ pct  ┆ gross  ┆ net    ┆ savings  ┆ mortgage_yrs │
+    │ ---            ┆ ---  ┆ ---    ┆ ---    ┆ ---      ┆ ---          │
+    │ str            ┆ str  ┆ i64    ┆ i64    ┆ f64      ┆ f64          │
+    ╞════════════════╪══════╪════════╪════════╪══════════╪══════════════╡
+    │ Liechtenstein  ┆ 90th ┆ 296000 ┆ 241029 ┆ 204028.2 ┆ 1.890637     │
+    │ Switzerland    ┆ 90th ┆ 296000 ┆ 197595 ┆ 146499.0 ┆ 2.751549     │
+    │ Liechtenstein  ┆ 75th ┆ 179000 ┆ 150977 ┆ 113976.2 ┆ 3.705415     │
+    │ Switzerland    ┆ 75th ┆ 179000 ┆ 130540 ┆ 79444.0  ┆ 5.863774     │
+    │ United_Kingdom ┆ 90th ┆ 210000 ┆ 124864 ┆ 79422.76 ┆ 5.865876     │
+    │ Liechtenstein  ┆ 50th ┆ 125000 ┆ 107666 ┆ 70665.2  ┆ 6.883014     │
+    │ Liechtenstein  ┆ 25th ┆ 101000 ┆ 87914  ┆ 50913.2  ┆ 10.833333    │
+    │ United_Kingdom ┆ 75th ┆ 145000 ┆ 90415  ┆ 44973.76 ┆ 12.833333    │
+    │ Switzerland    ┆ 50th ┆ 125000 ┆ 95980  ┆ 44884.0  ┆ 12.916667    │
+    │ Austria        ┆ 90th ┆ 91300  ┆ 57970  ┆ 40810.0  ┆ 14.583333    │
+    │ Germany        ┆ 90th ┆ 129000 ┆ 62710  ┆ 32590.0  ┆ 22.083333    │
+    │ Austria        ┆ 75th ┆ 74100  ┆ 48458  ┆ 31298.0  ┆ 24.083333    │
+    │ Liechtenstein  ┆ 10th ┆ 77300  ┆ 67907  ┆ 30906.2  ┆ 24.833333    │
+    │ Switzerland    ┆ 25th ┆ 101000 ┆ 79895  ┆ 28799.0  ┆ 40.23938     │
+    │ United_Kingdom ┆ 50th ┆ 98500  ┆ 69280  ┆ 23838.76 ┆ 94.495971    │
+    │ Germany        ┆ 75th ┆ 99100  ┆ 53306  ┆ 23186.0  ┆ 114.88037    │
+    │ Austria        ┆ 50th ┆ 58300  ┆ 40049  ┆ 22889.0  ┆ 127.382924   │
+    │ Germany        ┆ 50th ┆ 80200  ┆ 46240  ┆ 16120.0  ┆ inf          │
+    │ Austria        ┆ 25th ┆ 43000  ┆ 31674  ┆ 14514.0  ┆ inf          │
+    │ Switzerland    ┆ 10th ┆ 77300  ┆ 63017  ┆ 11921.0  ┆ inf          │
+    │ Germany        ┆ 25th ┆ 65700  ┆ 39937  ┆ 9817.0   ┆ inf          │
+    │ Austria        ┆ 10th ┆ 28600  ┆ 22993  ┆ 5833.0   ┆ inf          │
+    │ United_Kingdom ┆ 25th ┆ 66000  ┆ 50429  ┆ 4987.76  ┆ inf          │
+    │ Germany        ┆ 10th ┆ 54300  ┆ 34236  ┆ 4116.0   ┆ inf          │
+    │ United_Kingdom ┆ 10th ┆ 48100  ┆ 38682  ┆ -6759.24 ┆ inf          │
+    └────────────────┴──────┴────────┴────────┴──────────┴──────────────┘
 
-for this demo the first 3 characters denote the country (ISO 3166-1 alpha-3), the bracketed value denotes the salary percentile (P10, P25, P50, P75, P90) and the rest shows the estimated annual savings when working in that country after accounting for cost of living and taxes/social deductions. the parenthetical value for some entries indicates the number of years it would take to pay off a typical mortgage in vienna, austria (arbitrary lower income country for arbitrage comparison).
-
-for a visual report, check out: https://sueszli.github.io/geo-arb/plots/savings.pdf
+in this demo, for each country and income percentile, we compare the net income to the annual expenses, and calculate the estimated years to pay off a typical mortgage in vienna, austria (arbitrary benchmark for arbitrage comparison), based on the savings potential. "inf" means savings are insufficient.

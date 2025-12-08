@@ -1,3 +1,41 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "currency-converter==0.5.5",
+#   "currencyconverter==0.18.11",
+# ]
+# ///
+
+
+GROSS_INCOME_BY_PERCENTILE = {
+    # data from levels.fyi
+    "10th": 48_100,
+    "25th": 66_000,
+    "50th": 98_500,
+    "75th": 145_000,
+    "90th": 210_000,
+}
+
+EXPENSES_BREAKDOWN = {
+    # london
+    # adjusted from numbeo.com: single, central 1bedroom
+    "Housing": 2776.95,
+    "Utilities": 263.93,
+    "Groceries": 286.88,
+    "Transportation": 218.03,
+    "Subscriptions": 57.38,
+    "Discretionary": 114.75,
+    "Miscellaneous": 68.85,
+}
+
+ANNUAL_EXPENSES = sum(EXPENSES_BREAKDOWN.values()) * 12
+
+
+#
+# income tax
+#
+
+
 from currency_converter import CurrencyConverter
 
 

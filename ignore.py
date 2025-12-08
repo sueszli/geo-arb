@@ -37,53 +37,10 @@ class DevExperience(str, Enum):
 # retrieval
 #
 
-
-GROSS_INCOME_BY_PERCENTILE = {
-    # data from levels.fyi
+EXPENSES_BREAKDOWN = {
     Country.GBR: {
-        "10th": 48_100,
-        "25th": 66_000,
-        "50th": 98_500,
-        "75th": 145_000,
-        "90th": 210_000,
-    },
-    Country.CHE: {
-        # maybe also check: https://swissdevjobs.ch/salaries
-        "10th": 77_300,
-        "25th": 101_000,
-        "50th": 125_000,
-        "75th": 179_000,
-        "90th": 296_000,
-    },
-    Country.LIE: {
-        # insufficient data, using switzerland's values
-        # salaries are mostly the same
-        "10th": 77_300,
-        "25th": 101_000,
-        "50th": 125_000,
-        "75th": 179_000,
-        "90th": 296_000,
-    },
-    Country.DEU: {
-        "10th": 54_300,
-        "25th": 65_700,
-        "50th": 80_200,
-        "75th": 99_100,
-        "90th": 129_000,
-    },
-    Country.AUT: {
-        "10th": 28_600,
-        "25th": 43_000,
-        "50th": 58_300,
-        "75th": 74_100,
-        "90th": 91_300,
-    },
-}
-
-EXPENSES = {
-    # mostly from numbeo.com
-    # adapt to your lifestyle as needed!
-    Country.GBR: {  # london
+        # london
+        # adjusted from numbeo.com: single, central 1bedroom
         "Housing": 2776.95,
         "Utilities": 263.93,
         "Groceries": 286.88,
@@ -93,6 +50,7 @@ EXPENSES = {
         "Miscellaneous": 68.85,
     },
     Country.CHE: {  # zurich
+        # adjusted from numbeo.com: single, central 1bedroom
         "Housing": 2854.00,
         "Utilities": 248.00,
         "Groceries": 474.00,
@@ -101,7 +59,9 @@ EXPENSES = {
         "Discretionary": 108.00,
         "Miscellaneous": 162.00,
     },
-    Country.LIE: {  # vaduz
+    Country.LIE: {
+        # vaduz
+        # adjusted from numbeo.com: single, central 1bedroom
         "Housing": 1620.00,
         "Utilities": 216.00,
         "Groceries": 810.00,
@@ -110,7 +70,9 @@ EXPENSES = {
         "Discretionary": 108.00,
         "Miscellaneous": 75.60,
     },
-    Country.DEU: {  # munich
+    Country.DEU: {
+        # munich
+        # adjusted from numbeo.com: single, central 1bedroom
         "Housing": 1700.00,
         "Utilities": 150.00,
         "Groceries": 350.00,
@@ -119,7 +81,9 @@ EXPENSES = {
         "Discretionary": 100.00,
         "Miscellaneous": 100.00,
     },
-    Country.AUT: {  # vienna
+    Country.AUT: {
+        # vienna
+        # adjusted from numbeo.com: single, central 1bedroom
         "Housing": 800.00,
         "Utilities": 150.00,
         "Groceries": 280.00,
@@ -129,6 +93,8 @@ EXPENSES = {
         "Miscellaneous": 50.00,
     },
 }
+
+ANNUAL_EXPENSES = sum(EXPENSES_BREAKDOWN.values()) * 12
 
 
 from tax.austria import net_salary as aut_net_salary
@@ -331,4 +297,4 @@ def print_savings():
 
 if __name__ == "__main__":
     print_savings()
-    plot()
+    # plot()

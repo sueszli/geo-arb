@@ -1,3 +1,43 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "currency-converter==0.5.5",
+#   "currencyconverter==0.18.11",
+#   "numpy==1.26.4",
+# ]
+# ///
+
+
+GROSS_INCOME_BY_PERCENTILE = {
+    # data from levels.fyi
+    # maybe also check: https://swissdevjobs.ch/salaries
+    "10th": 77_300,
+    "25th": 101_000,
+    "50th": 125_000,
+    "75th": 179_000,
+    "90th": 296_000,
+}
+
+EXPENSES_BREAKDOWN = {
+    # zurich
+    # adjusted from numbeo.com: single, central 1bedroom
+    "Housing": 2854.00,
+    "Utilities": 248.00,
+    "Groceries": 474.00,
+    "Transportation": 331.00,
+    "Subscriptions": 81.00,
+    "Discretionary": 108.00,
+    "Miscellaneous": 162.00,
+}
+
+ANNUAL_EXPENSES = sum(EXPENSES_BREAKDOWN.values()) * 12
+
+
+#
+# income tax
+#
+
+
 import csv
 import math
 from collections import defaultdict

@@ -1,8 +1,35 @@
+GROSS_INCOME_BY_PERCENTILE = {
+    # data from levels.fyi
+    "10th": 54_300,
+    "25th": 65_700,
+    "50th": 80_200,
+    "75th": 99_100,
+    "90th": 129_000,
+}
+
+EXPENSES_BREAKDOWN = {
+    # munich
+    # adjusted from numbeo.com: single, central 1bedroom
+    "Housing": 1700.00,
+    "Utilities": 150.00,
+    "Groceries": 350.00,
+    "Transportation": 50.00,
+    "Subscriptions": 60.00,
+    "Discretionary": 100.00,
+    "Miscellaneous": 100.00,
+}
+
+ANNUAL_EXPENSES = sum(EXPENSES_BREAKDOWN.values()) * 12
+
+
+#
+# income tax
 #
 # algorithm provided by german federal ministry of finance
 # pseudocode: https://www.bmf-steuerrechner.de/javax.faces.resource/daten/xmls/Lohnsteuer2025.xml.xhtml
 # codegen: https://github.com/jenner/LstGen
 #
+
 
 import decimal
 

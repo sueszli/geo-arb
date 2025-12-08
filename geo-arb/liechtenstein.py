@@ -1,3 +1,43 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "currency-converter==0.5.5",
+#   "currencyconverter==0.18.11",
+# ]
+# ///
+
+
+GROSS_INCOME_BY_PERCENTILE = {
+    # data from levels.fyi
+    # insufficient data, using switzerland's values
+    # salaries are mostly the same
+    "10th": 77_300,
+    "25th": 101_000,
+    "50th": 125_000,
+    "75th": 179_000,
+    "90th": 296_000,
+}
+
+EXPENSES_BREAKDOWN = {
+    # vaduz
+    # adjusted from numbeo.com: single, central 1bedroom
+    "Housing": 1620.00,
+    "Utilities": 216.00,
+    "Groceries": 810.00,
+    "Transportation": 199.80,
+    "Subscriptions": 54.00,
+    "Discretionary": 108.00,
+    "Miscellaneous": 75.60,
+}
+
+ANNUAL_EXPENSES = sum(EXPENSES_BREAKDOWN.values()) * 12
+
+
+#
+# income tax
+#
+
+
 from currency_converter import CurrencyConverter
 
 
