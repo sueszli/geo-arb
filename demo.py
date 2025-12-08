@@ -75,11 +75,11 @@ def plot(df: pl.DataFrame):
     ]
     pdf["experience_label"] = pd.Categorical(pdf["experience_label"], categories=label_order, ordered=True)
 
-    # Sort countries by highest net savings
+    # sort countries by highest net savings
     country_order = pdf.groupby("country")["net_savings"].max().sort_values(ascending=False).index.tolist()
     pdf["country"] = pd.Categorical(pdf["country"], categories=country_order, ordered=True)
 
-    # Label offset logic
+    # label offset logic
     net_savings_top = pdf["tax_deductions"] + pdf["living_costs"] + pdf["net_savings"]
     label_offset = pdf["net_savings"].abs() * 0.04 + 1200
     signed_label_offset = label_offset.where(pdf["net_savings"] >= 0, -label_offset)
@@ -98,7 +98,7 @@ def plot(df: pl.DataFrame):
     pdf["label_text"] = pdf["net_savings"].apply(_format_thousands)
     pdf["label_y"] = net_savings_top + signed_label_offset
 
-    # Melt for stacked bar
+    # melt for stacked bar
     breakdown = pdf.melt(
         id_vars=["country", "experience_label", "experience_numeric"],
         value_vars=["tax_deductions", "living_costs", "net_savings"],
@@ -106,7 +106,7 @@ def plot(df: pl.DataFrame):
         value_name="amount",
     )
 
-    # Renaming components for legend
+    # renaming components for legend
     component_map = {
         "tax_deductions": "Tax & social deductions",
         "living_costs": "Cost of living",
@@ -116,14 +116,13 @@ def plot(df: pl.DataFrame):
     component_order = ["Cost of living", "Tax & social deductions", "Net savings"]
     breakdown["component"] = pd.Categorical(breakdown["component"], categories=component_order, ordered=True)
 
-    # Add labels for bar sections
+    # add labels for bar sections
     breakdown["label_text"] = breakdown["amount"].apply(_format_thousands)
 
-    # Plot
     p = (
         p9.ggplot(breakdown, p9.aes("experience_numeric", "amount", fill="component"))
         + p9.geom_col(width=0.75)
-        # Add labels inside the bars (only for Net savings)
+        # add labels inside the bars (only for Net savings)
         + p9.geom_text(
             data=breakdown[breakdown["component"] == "Net savings"],
             mapping=p9.aes(label="label_text"),
@@ -170,7 +169,7 @@ def plot(df: pl.DataFrame):
         )
         + p9.theme_minimal()
         + p9.theme(
-            figure_size=(16, 12),
+            figure_size=(15, 13),
             plot_title=p9.element_text(size=14, weight="bold", margin={"b": 4}),
             plot_subtitle=p9.element_text(size=10, color="#4a4a4a", margin={"b": 6}),
             axis_text_x=p9.element_text(angle=45, ha="right", size=9),
