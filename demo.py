@@ -5,12 +5,14 @@
 #   "currencyconverter==0.18.11",
 #   "numpy==1.26.4",
 #   "polars==1.36.0",
+#   "plotnine",
 # ]
 # ///
 
 import sys
 from pathlib import Path
 import polars as pl
+import plotnine as p9
 pl.Config.set_tbl_rows(-1)
 
 sys.path.append(str(Path(__file__).parent / "geo-arb"))
@@ -29,7 +31,14 @@ for country in countries:
             net = country.net_salary_func(gross)
             savings = net - country.annual_expenses
             mortgage_years = estimate_mortgage_payoff_years(savings)
-            results.append({"country": country.name, "pct": p, "gross": gross, "net": net, "savings": savings, "mortgage_yrs": mortgage_years})
+            results.append({
+                "country": country.name,
+                "pct": p,
+                "gross": gross,
+                "net": net,
+                "savings": savings,
+                "mortgage_yrs": mortgage_years,
+            })
 
 df = pl.DataFrame(results).sort("savings", descending=True)
 print(df)

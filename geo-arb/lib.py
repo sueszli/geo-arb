@@ -30,7 +30,7 @@ def load_countries() -> List[CountryData]:
             return None
 
         return CountryData(
-            name=path.stem.title(),
+            name=path.stem.replace("_", " ").title(),
             annual_expenses=module.ANNUAL_EXPENSES,
             gross_income_by_percentile=module.GROSS_INCOME_BY_PERCENTILE,
             net_salary_func=module.net_salary,
