@@ -1,11 +1,3 @@
-# /// script
-# requires-python = ">=3.11"
-# dependencies = [
-#   "openfisca-core==43.4.2",
-#   "openfisca-france==174.2.8",
-# ]
-# ///
-
 GROSS_INCOME_BY_PERCENTILE = {
     # data from levels.fyi
     "10th": 35_400,

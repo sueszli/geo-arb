@@ -1,13 +1,3 @@
-# /// script
-# requires-python = ">=3.11"
-# dependencies = [
-#   "currency-converter==0.5.5",
-#   "currencyconverter==0.18.11",
-#   "numpy==1.26.4",
-# ]
-# ///
-
-
 GROSS_INCOME_BY_PERCENTILE = {
     # data from levels.fyi
     # maybe also check: https://swissdevjobs.ch/salaries
