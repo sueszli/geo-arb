@@ -34,7 +34,7 @@ def get_savings(country: str, gross_salary: float):
     net_salary = module.net_salary(gross_salary)
     annual_expenses = module.ANNUAL_EXPENSES
     net_savings = net_salary - annual_expenses
-    click.echo(f"net savings:\tEUR{net_savings:,.2f}")
+    click.echo(f"net savings:\t{net_savings:,.2f} EUR")
 
 
 if __name__ == "__main__":
