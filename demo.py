@@ -1,13 +1,14 @@
 # /// script
 # requires-python = ">=3.11"
 # dependencies = [
-#   "currency-converter==0.5.5",
-#   "currencyconverter==0.18.11",
-#   "openfisca-core==43.4.2",
-#   "openfisca-france==174.2.8",
-#   "numpy==1.26.4",
-#   "polars==1.36.0",
-#   "plotnine==0.15.1",
+#   "currency-converter",
+#   "currencyconverter",
+#   "openfisca-core",
+#   "openfisca-france",
+#   "numpy",
+#   "polars",
+#   "plotnine",
+#   "pyarrow",
 # ]
 # ///
 
