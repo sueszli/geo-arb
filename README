@@ -14,44 +14,47 @@ currently limited to a subset of countries.
 
 for a detailed breakdown, see: https://sueszli.github.io/geo-arb/savings.pdf
 
+```
 $ uv run demo.py
 
-    shape: (30, 6)
-    ┌────────────────┬──────┬────────┬────────┬──────────┬──────────────┐
-    │ country        ┆ pct  ┆ gross  ┆ net    ┆ savings  ┆ mortgage_yrs │
-    │ ---            ┆ ---  ┆ ---    ┆ ---    ┆ ---      ┆ ---          │
-    │ str            ┆ str  ┆ i64    ┆ i64    ┆ f64      ┆ f64          │
-    ╞════════════════╪══════╪════════╪════════╪══════════╪══════════════╡
-    │ Liechtenstein  ┆ 90th ┆ 296000 ┆ 241029 ┆ 204028.2 ┆ 1.890637     │
-    │ Switzerland    ┆ 90th ┆ 296000 ┆ 197595 ┆ 146499.0 ┆ 2.751549     │
-    │ Liechtenstein  ┆ 75th ┆ 179000 ┆ 150977 ┆ 113976.2 ┆ 3.705415     │
-    │ Switzerland    ┆ 75th ┆ 179000 ┆ 130540 ┆ 79444.0  ┆ 5.863774     │
-    │ United Kingdom ┆ 90th ┆ 210000 ┆ 124864 ┆ 79422.76 ┆ 5.865876     │
-    │ Liechtenstein  ┆ 50th ┆ 125000 ┆ 107666 ┆ 70665.2  ┆ 6.883014     │
-    │ Liechtenstein  ┆ 25th ┆ 101000 ┆ 87914  ┆ 50913.2  ┆ 10.833333    │
-    │ United Kingdom ┆ 75th ┆ 145000 ┆ 90415  ┆ 44973.76 ┆ 12.833333    │
-    │ Switzerland    ┆ 50th ┆ 125000 ┆ 95980  ┆ 44884.0  ┆ 12.916667    │
-    │ Austria        ┆ 90th ┆ 91300  ┆ 57970  ┆ 40810.0  ┆ 14.583333    │
-    │ Germany        ┆ 90th ┆ 129000 ┆ 62710  ┆ 32590.0  ┆ 22.083333    │
-    │ Austria        ┆ 75th ┆ 74100  ┆ 48458  ┆ 31298.0  ┆ 24.083333    │
-    │ Liechtenstein  ┆ 10th ┆ 77300  ┆ 67907  ┆ 30906.2  ┆ 24.833333    │
-    │ Switzerland    ┆ 25th ┆ 101000 ┆ 79895  ┆ 28799.0  ┆ 40.23938     │
-    │ France         ┆ 90th ┆ 102500 ┆ 59890  ┆ 27144.4  ┆ 49.772063    │
-    │ United Kingdom ┆ 50th ┆ 98500  ┆ 69280  ┆ 23838.76 ┆ 94.495971    │
-    │ Germany        ┆ 75th ┆ 99100  ┆ 53306  ┆ 23186.0  ┆ 114.88037    │
-    │ Austria        ┆ 50th ┆ 58300  ┆ 40049  ┆ 22889.0  ┆ 127.382924   │
-    │ Germany        ┆ 50th ┆ 80200  ┆ 46240  ┆ 16120.0  ┆ inf          │
-    │ Austria        ┆ 25th ┆ 43000  ┆ 31674  ┆ 14514.0  ┆ inf          │
-    │ France         ┆ 75th ┆ 74100  ┆ 45705  ┆ 12959.4  ┆ inf          │
-    │ Switzerland    ┆ 10th ┆ 77300  ┆ 63017  ┆ 11921.0  ┆ inf          │
-    │ Germany        ┆ 25th ┆ 65700  ┆ 39937  ┆ 9817.0   ┆ inf          │
-    │ Austria        ┆ 10th ┆ 28600  ┆ 22993  ┆ 5833.0   ┆ inf          │
-    │ United Kingdom ┆ 25th ┆ 66000  ┆ 50429  ┆ 4987.76  ┆ inf          │
-    │ Germany        ┆ 10th ┆ 54300  ┆ 34236  ┆ 4116.0   ┆ inf          │
-    │ France         ┆ 50th ┆ 56400  ┆ 36287  ┆ 3541.4   ┆ inf          │
-    │ France         ┆ 25th ┆ 43600  ┆ 29576  ┆ -3169.6  ┆ inf          │
-    │ United Kingdom ┆ 10th ┆ 48100  ┆ 38682  ┆ -6759.24 ┆ inf          │
-    │ France         ┆ 10th ┆ 35400  ┆ 25299  ┆ -7446.6  ┆ inf          │
-    └────────────────┴──────┴────────┴────────┴──────────┴──────────────┘
+shape: (30, 6)
+┌────────────────┬──────┬────────┬────────┬──────────┬──────────────┐
+│ country        ┆ pct  ┆ gross  ┆ net    ┆ savings  ┆ mortgage_yrs │
+│ ---            ┆ ---  ┆ ---    ┆ ---    ┆ ---      ┆ ---          │
+│ str            ┆ str  ┆ i64    ┆ i64    ┆ f64      ┆ f64          │
+╞════════════════╪══════╪════════╪════════╪══════════╪══════════════╡
+│ Liechtenstein  ┆ 90th ┆ 296000 ┆ 241029 ┆ 204028.2 ┆ 1.890637     │
+│ Switzerland    ┆ 90th ┆ 296000 ┆ 197595 ┆ 146499.0 ┆ 2.751549     │
+│ Liechtenstein  ┆ 75th ┆ 179000 ┆ 150977 ┆ 113976.2 ┆ 3.705415     │
+│ Switzerland    ┆ 75th ┆ 179000 ┆ 130540 ┆ 79444.0  ┆ 5.863774     │
+│ United Kingdom ┆ 90th ┆ 210000 ┆ 124864 ┆ 79422.76 ┆ 5.865876     │
+│ Liechtenstein  ┆ 50th ┆ 125000 ┆ 107666 ┆ 70665.2  ┆ 6.883014     │
+│ Liechtenstein  ┆ 25th ┆ 101000 ┆ 87914  ┆ 50913.2  ┆ 10.833333    │
+│ United Kingdom ┆ 75th ┆ 145000 ┆ 90415  ┆ 44973.76 ┆ 12.833333    │
+│ Switzerland    ┆ 50th ┆ 125000 ┆ 95980  ┆ 44884.0  ┆ 12.916667    │
+│ Austria        ┆ 90th ┆ 91300  ┆ 57970  ┆ 40810.0  ┆ 14.583333    │
+│ Germany        ┆ 90th ┆ 129000 ┆ 62710  ┆ 32590.0  ┆ 22.083333    │
+│ Austria        ┆ 75th ┆ 74100  ┆ 48458  ┆ 31298.0  ┆ 24.083333    │
+│ Liechtenstein  ┆ 10th ┆ 77300  ┆ 67907  ┆ 30906.2  ┆ 24.833333    │
+│ Switzerland    ┆ 25th ┆ 101000 ┆ 79895  ┆ 28799.0  ┆ 40.23938     │
+│ France         ┆ 90th ┆ 102500 ┆ 59890  ┆ 27144.4  ┆ 49.772063    │
+│ United Kingdom ┆ 50th ┆ 98500  ┆ 69280  ┆ 23838.76 ┆ 94.495971    │
+│ Germany        ┆ 75th ┆ 99100  ┆ 53306  ┆ 23186.0  ┆ 114.88037    │
+│ Austria        ┆ 50th ┆ 58300  ┆ 40049  ┆ 22889.0  ┆ 127.382924   │
+│ Germany        ┆ 50th ┆ 80200  ┆ 46240  ┆ 16120.0  ┆ inf          │
+│ Austria        ┆ 25th ┆ 43000  ┆ 31674  ┆ 14514.0  ┆ inf          │
+│ France         ┆ 75th ┆ 74100  ┆ 45705  ┆ 12959.4  ┆ inf          │
+│ Switzerland    ┆ 10th ┆ 77300  ┆ 63017  ┆ 11921.0  ┆ inf          │
+│ Germany        ┆ 25th ┆ 65700  ┆ 39937  ┆ 9817.0   ┆ inf          │
+│ Austria        ┆ 10th ┆ 28600  ┆ 22993  ┆ 5833.0   ┆ inf          │
+│ United Kingdom ┆ 25th ┆ 66000  ┆ 50429  ┆ 4987.76  ┆ inf          │
+│ Germany        ┆ 10th ┆ 54300  ┆ 34236  ┆ 4116.0   ┆ inf          │
+│ France         ┆ 50th ┆ 56400  ┆ 36287  ┆ 3541.4   ┆ inf          │
+│ France         ┆ 25th ┆ 43600  ┆ 29576  ┆ -3169.6  ┆ inf          │
+│ United Kingdom ┆ 10th ┆ 48100  ┆ 38682  ┆ -6759.24 ┆ inf          │
+│ France         ┆ 10th ┆ 35400  ┆ 25299  ┆ -7446.6  ┆ inf          │
+└────────────────┴──────┴────────┴────────┴──────────┴──────────────┘
+```
 
 in this demo, for each country and income percentile, we compare the net income to the annual expenses, and calculate the estimated years to pay off a typical mortgage in vienna, austria (arbitrary benchmark for arbitrage comparison), based on the savings potential. "inf" means savings are insufficient.
+
